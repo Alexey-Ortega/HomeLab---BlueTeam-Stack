@@ -1,5 +1,3 @@
-
-```markdown
 # 🛡️ Blue Team Homelab
 
 ![Proxmox](https://img.shields.io/badge/Proxmox-VE_8-E57000?style=flat&logo=proxmox)
@@ -8,26 +6,19 @@
 ![Status](https://img.shields.io/badge/Status-Active-success?style=flat)
 ![Focus](https://img.shields.io/badge/Focus-Blue_Team-blue?style=flat)
 
-> Complete virtualization infrastructure for hands-on defensive cybersecurity
-> training — covering SIEM/SOC operations, digital forensics, and
-> brute-force attack simulations.
+> Complete virtualization infrastructure for hands-on defensive cybersecurity training — covering SIEM/SOC operations, digital forensics, and brute-force attack simulations.
 
 ---
 
 ## 🧠 Why This Lab?
 
-I built this homelab to bridge the gap between theory and real-world
-Blue Team work. Instead of just reading about threat detection or
-forensics, I wanted an environment where I could actually break things,
-detect them, and respond — all on my own hardware.
+I built this homelab to bridge the gap between theory and real-world Blue Team work. Instead of just reading about threat detection or forensics, I wanted an environment where I could actually break things, detect them, and respond — all on my own hardware.
 
 ---
 
 ## 📋 Description
 
-This repository documents the design, configuration, and lessons learned
-from a cybersecurity homelab built on consumer-grade hardware
-(HP laptop, Intel Core i7 7th gen, 16GB RAM, 620GB storage).
+This repository documents the design, configuration, and lessons learned from a cybersecurity homelab built on consumer-grade hardware (HP laptop, Intel Core i7 7th gen, 16GB RAM, 620GB storage).
 
 The primary goal is to develop hands-on skills in:
 
@@ -41,39 +32,37 @@ The primary goal is to develop hands-on skills in:
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     PROXMOX VE 8.x                          │
-│                  (Bare-metal Hypervisor)                     │
-│                                                              │
-│  ┌──────────────┐  ┌──────────────┐  ┌────────────────────┐ │
-│  │   VM 100     │  │   VM 101     │  │      VM 102        │ │
-│  │ Debian +     │  │ Windows 10   │  │ SIFT Workstation   │ │
-│  │ Docker       │  │ Lab (victim) │  │ (SANS Forensics)   │ │
-│  │ 4vCPU/6GB    │  │ 2vCPU/4GB    │  │ 2vCPU/2GB          │ │
-│  └──────────────┘  └──────────────┘  └────────────────────┘ │
-│                                                              │
-│  ┌──────────────────────────────────────────────────────┐   │
-│  │                      VM 103                          │   │
-│  │                  Elastic SIEM                        │   │
-│  │         (Elasticsearch + Kibana + Logstash)          │   │
-│  │                   3vCPU / 4GB RAM                    │   │
-│  └──────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────┘
-```
+    ┌─────────────────────────────────────────────────────────────┐
+    │                     PROXMOX VE 8.x                          │
+    │                  (Bare-metal Hypervisor)                     │
+    │                                                              │
+    │  ┌──────────────┐  ┌──────────────┐  ┌────────────────────┐ │
+    │  │   VM 100     │  │   VM 101     │  │      VM 102        │ │
+    │  │ Debian +     │  │ Windows 10   │  │ SIFT Workstation   │ │
+    │  │ Docker       │  │ Lab (victim) │  │ (SANS Forensics)   │ │
+    │  │ 4vCPU/6GB    │  │ 2vCPU/4GB    │  │ 2vCPU/2GB          │ │
+    │  └──────────────┘  └──────────────┘  └────────────────────┘ │
+    │                                                              │
+    │  ┌──────────────────────────────────────────────────────┐   │
+    │  │                      VM 103                          │   │
+    │  │                  Elastic SIEM                        │   │
+    │  │         (Elasticsearch + Kibana + Logstash)          │   │
+    │  │                   3vCPU / 4GB RAM                    │   │
+    │  └──────────────────────────────────────────────────────┘   │
+    └─────────────────────────────────────────────────────────────┘
 
 ---
 
 ## 💻 Hardware
 
-| Component      | Specification                       |
-|----------------|-------------------------------------|
-| CPU            | Intel Core i7 7th Generation        |
-| RAM            | 16 GB DDR4                          |
-| Storage (main) | 520 GB NVMe (OS + VMs)              |
-| Storage (data) | 1 TB HDD                            |
-| Network        | Gigabit Ethernet                    |
-| UPS            | Battery backup for power protection |
+| Component | Specification |
+|---|---|
+| CPU | Intel Core i7 7th Generation |
+| RAM | 16 GB DDR4 |
+| Storage (main) | 520 GB NVMe (OS + VMs) |
+| Storage (data) | 1 TB HDD |
+| Network | Gigabit Ethernet |
+| UPS | Battery backup for power protection |
 
 ---
 
@@ -137,7 +126,4 @@ The primary goal is to develop hands-on skills in:
 
 ---
 
-*Built for educational purposes — developing real-world defensive
-cybersecurity skills, one incident at a time.*
-```
-
+*Built for educational purposes — developing real-world defensive cybersecurity skills, one incident at a time.*
