@@ -1,129 +1,96 @@
-# 🛡️ Blue Team Homelab
+# 🛡️ Blue Team Homelab – SOC & Threat Detection Lab
 
-![Proxmox](https://img.shields.io/badge/Proxmox-VE_8-E57000?style=flat&logo=proxmox)
-![Elastic](https://img.shields.io/badge/Elastic-SIEM_8.x-005571?style=flat&logo=elastic)
-![Docker](https://img.shields.io/badge/Docker-Engine-2496ED?style=flat&logo=docker)
-![Status](https://img.shields.io/badge/Status-Active-success?style=flat)
-![Focus](https://img.shields.io/badge/Focus-Blue_Team-blue?style=flat)
+**Laboratorio profesional de ciberseguridad defensiva (Blue Team / SOC Analyst)**
 
-> Complete virtualization infrastructure for hands-on defensive cybersecurity training — covering SIEM/SOC operations, digital forensics, and brute-force attack simulations.
-
----
-
-## 🧠 Why This Lab?
-
-I built this homelab to bridge the gap between theory and real-world Blue Team work. Instead of just reading about threat detection or forensics, I wanted an environment where I could actually break things, detect them, and respond — all on my own hardware.
+![Proxmox](https://img.shields.io/badge/Proxmox-VE%209.1-brightgreen)
+![Elastic](https://img.shields.io/badge/Elastic-Stack-005571)
+![WireGuard](https://img.shields.io/badge/VPN-WireGuard-8811FF)
+![Docker](https://img.shields.io/badge/Docker-Engine-2496ED)
+![Status](https://img.shields.io/badge/Estado-Operativo-success)
 
 ---
 
-## 📋 Description
+### 🎯 Objetivo
+Entorno realista y segmentado para practicar y demostrar competencias de **Blue Team / SOC Analyst**:
 
-This repository documents the design, configuration, and lessons learned from a cybersecurity homelab built on consumer-grade hardware (HP laptop, Intel Core i7 7th gen, 16GB RAM, 620GB storage).
-
-The primary goal is to develop hands-on skills in:
-
-- Blue Team operations
-- Log analysis and threat detection with SIEM
-- Digital forensics analysis
-- Linux systems administration
-- Virtualization and infrastructure management
+- Monitoreo y correlación de logs en tiempo real
+- Detección y respuesta a amenazas (Threat Hunting)
+- Análisis forense digital
+- Simulación controlada de ataques
+- Preparación para roles entry-level en Querétaro
 
 ---
 
-## 🏗️ Architecture
+### 🧱 Infraestructura
 
-    ┌─────────────────────────────────────────────────────────────┐
-    │                     PROXMOX VE 8.x                          │
-    │                  (Bare-metal Hypervisor)                     │
-    │                                                              │
-    │  ┌──────────────┐  ┌──────────────┐  ┌────────────────────┐ │
-    │  │   VM 100     │  │   VM 101     │  │      VM 102        │ │
-    │  │ Debian +     │  │ Windows 10   │  │ SIFT Workstation   │ │
-    │  │ Docker       │  │ Lab (victim) │  │ (SANS Forensics)   │ │
-    │  │ 4vCPU/6GB    │  │ 2vCPU/4GB    │  │ 2vCPU/2GB          │ │
-    │  └──────────────┘  └──────────────┘  └────────────────────┘ │
-    │                                                              │
-    │  ┌──────────────────────────────────────────────────────┐   │
-    │  │                      VM 103                          │   │
-    │  │                  Elastic SIEM                        │   │
-    │  │         (Elasticsearch + Kibana + Logstash)          │   │
-    │  │                   3vCPU / 4GB RAM                    │   │
-    │  └──────────────────────────────────────────────────────┘   │
-    └─────────────────────────────────────────────────────────────┘
+- **Hipervisor**: Proxmox VE 9.1.1
+- **Hardware**: Intel Core i7 7th Gen | 16 GB RAM | NVMe + HDD
+- **Redes segmentadas**:
+  - `vmbr0` → Red principal (192.168.1.0/24)
+  - `vmbr2` → Red aislada para pruebas de malware (10.10.10.0/24)
 
 ---
 
-## 💻 Hardware
+### 🖥️ Máquinas Virtuales (Estado actual)
 
-| Component | Specification |
-|---|---|
-| CPU | Intel Core i7 7th Generation |
-| RAM | 16 GB DDR4 |
-| Storage (main) | 520 GB NVMe (OS + VMs) |
-| Storage (data) | 1 TB HDD |
-| Network | Gigabit Ethernet |
-| UPS | Battery backup for power protection |
+| VMID | Nombre              | SO            | Estado | Rol principal                          |
+|------|---------------------|---------------|--------|----------------------------------------|
+| 100  | Debian-Docker       | Debian 13     | 🟢    | Servicios críticos (Docker, Portainer, WireGuard, Bot Telegram) |
+| 103  | Elastic-Siem        | Ubuntu 22.04  | 🟢    | SIEM central (Kibana + Fleet Server)   |
+| 8000 | Windows-Victim      | Windows 10/11 | 🟢    | Máquina de detonación de malware       |
+| 404  | Linux-Victim        | Ubuntu        | 🔴    | Víctima Linux                          |
+| 102  | SIFT                | Ubuntu        | 🔴    | Análisis forense (bajo demanda)        |
 
----
-
-## 🖥️ Virtual Machines
-
-### VM 100 — Debian + Docker (Web/App Server)
-- **OS:** Debian 13 (Trixie)
-- **Resources:** 4 vCPU · 6 GB RAM · 120 GB disk
-- **Services:** Nginx, Docker Engine, Portainer CE
-- **Status:** Always on
-
-### VM 101 — Windows 10 Lab (Victim Machine)
-- **OS:** Windows 10 64-bit
-- **Resources:** 2 vCPU · 4 GB RAM · 65 GB disk
-- **Purpose:** Isolated environment for attack simulations
-- **Status:** On-demand
-
-### VM 102 — SIFT Workstation (Digital Forensics)
-- **OS:** Ubuntu 22.04 LTS (SIFT base)
-- **Resources:** 2 vCPU · 2 GB RAM · 50 GB disk
-- **Tools:** 80+ forensic tools from the SANS Institute
-- **Status:** On-demand
-
-### VM 103 — Elastic SIEM (Operations Center)
-- **OS:** Ubuntu 22.04 LTS
-- **Resources:** 3 vCPU · 4 GB RAM · 120 GB disk
-- **Stack:** Elasticsearch 8.x + Kibana 8.x
-- **Status:** Always on
+**VMs inamovibles (críticas)**: 100 y 103
 
 ---
 
-## 🔒 Security Implemented
+### 🐳 Servicios Principales (VM 100)
 
-- UFW Firewall with minimal required rules
-- Fail2ban for brute-force attack protection
-- SSH key-based authentication via ED25519 (no passwords)
-- VMs network-segmented by function
-
----
-
-## 🎯 Roadmap
-
-- [x] Proxmox VE installed and configured
-- [x] Debian VM with Docker and Portainer
-- [x] Security hardening (UFW, Fail2ban, SSH keys)
-- [x] Windows 10 VM for attack simulation
-- [x] SIFT Workstation for digital forensics
-- [x] Elastic SIEM (Elasticsearch + Kibana)
-- [ ] Wazuh agents deployed on all VMs
-- [ ] TrueNAS for centralized NAS storage
-- [ ] Cloudflare Tunnel for secure external access
-- [ ] Custom detection dashboards in Kibana
+- WireGuard → VPN remota segura
+- Portainer → Gestión de Docker
+- Bot Telegram → Alertas en tiempo real
+- Nginx → Reverse proxy y dashboards
 
 ---
 
-## ⚠️ Security Notes
+### 📊 SIEM – Elastic Stack
 
-- No IPs, credentials, tokens, or sensitive data included
-- Sensitive configurations use environment variables (excluded via `.gitignore`)
-- Victim VMs are fully isolated from the main network
+- Elasticsearch + Kibana (HTTPS)
+- Fleet Server
+- Elastic Agents en Proxmox y VMs críticas
+
+**Flujo actual**:  
+Proxmox + VMs → Elastic Agent → Fleet → Elasticsearch → Kibana
 
 ---
 
-*Built for educational purposes — developing real-world defensive cybersecurity skills, one incident at a time.*
+### 🔐 Hardening Aplicado
+
+- Cortafuegos por capas
+- Acceso SSH solo por llave
+- Puertos mínimos expuestos
+- Segmentación estricta (vmbr2 aislada)
+- Snapshots regulares de VMs críticas
+
+---
+
+### 🧪 Escenarios de Práctica Activos
+
+- Detección de escaneos y fuerza bruta
+- Ejecución controlada de malware (LockBit 5.0, Lumma Stealer, AsyncRAT, Mirai)
+- Análisis forense con SANS SIFT
+- Creación y tuning de reglas de detección en Elastic
+
+---
+
+### 📦 Estructura del Repositorio
+
+```bash
+homelab-blue-team/
+├── README.md
+├── configs/          # Configuraciones sanitizadas
+├── scripts/          # Automatización y alertas
+├── docs/             # Reportes SOC y playbooks
+├── diagrams/         # Diagramas y topología
+└── snapshots/        # Backups de configuración
