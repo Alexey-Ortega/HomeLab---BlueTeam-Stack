@@ -1,96 +1,96 @@
-# 🛡️ Blue Team Homelab – SOC & Threat Detection Lab
+# Infrastructure & Blue Team HomeLab
 
-**Laboratorio profesional de ciberseguridad defensiva (Blue Team / SOC Analyst)**
+![Proxmox](https://img.shields.io/badge/Proxmox-VE-E57000?logo=proxmox&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-Debian%20%7C%20Ubuntu-FCC624?logo=linux&logoColor=black)
+![Docker](https://img.shields.io/badge/Docker-Engine-2496ED?logo=docker&logoColor=white)
+![Elastic](https://img.shields.io/badge/Elastic-Stack-005571?logo=elastic&logoColor=white)
+![Status](https://img.shields.io/badge/status-active-success)
 
-![Proxmox](https://img.shields.io/badge/Proxmox-VE%209.1-brightgreen)
-![Elastic](https://img.shields.io/badge/Elastic-Stack-005571)
-![WireGuard](https://img.shields.io/badge/VPN-WireGuard-8811FF)
-![Docker](https://img.shields.io/badge/Docker-Engine-2496ED)
-![Status](https://img.shields.io/badge/Estado-Operativo-success)
+A hands-on environment for practicing **systems administration, virtualization, networking, monitoring, troubleshooting and defensive security**.
 
----
+> This repository documents a personal lab. Internal addresses, credentials, tokens and other sensitive values are intentionally omitted.
 
-### 🎯 Objetivo
-Entorno realista y segmentado para practicar y demostrar competencias de **Blue Team / SOC Analyst**:
+## Purpose
 
-- Monitoreo y correlación de logs en tiempo real
-- Detección y respuesta a amenazas (Threat Hunting)
-- Análisis forense digital
-- Simulación controlada de ataques
-- Preparación para roles entry-level en Querétaro
+This lab is designed to build practical skills for **Systems Administrator and IT Infrastructure roles**, with Blue Team monitoring as a complementary specialization.
 
----
+The environment is used to practice:
 
-### 🧱 Infraestructura
+- Linux server administration
+- Virtual machine lifecycle management
+- Docker service deployment and troubleshooting
+- Remote administration through SSH and WireGuard
+- Reverse proxy and service availability
+- Centralized log collection and monitoring
+- Network traffic visibility with Suricata
+- Backups, snapshots and recovery planning
 
-- **Hipervisor**: Proxmox VE 9.1.1
-- **Hardware**: Intel Core i7 7th Gen | 16 GB RAM | NVMe + HDD
-- **Redes segmentadas**:
-  - `vmbr0` → Red principal (192.168.1.0/24)
-  - `vmbr2` → Red aislada para pruebas de malware (10.10.10.0/24)
+## Architecture
 
----
+```text
+                         Proxmox VE
+                              |
+          +-------------------+-------------------+
+          |                   |                   |
+   Debian services      Elastic monitoring     Test systems
+          |                   |                   |
+ Docker / Nginx         Fleet / Kibana       Linux / Windows
+ WireGuard / tools      Logs / alerts        Troubleshooting
+```
 
-### 🖥️ Máquinas Virtuales (Estado actual)
+## Core Components
 
-| VMID | Nombre              | SO            | Estado | Rol principal                          |
-|------|---------------------|---------------|--------|----------------------------------------|
-| 100  | Debian-Docker       | Debian 13     | 🟢    | Servicios críticos (Docker, Portainer, WireGuard, Bot Telegram) |
-| 103  | Elastic-Siem        | Ubuntu 22.04  | 🟢    | SIEM central (Kibana + Fleet Server)   |
-| 8000 | Windows-Victim      | Windows 10/11 | 🟢    | Máquina de detonación de malware       |
-| 404  | Linux-Victim        | Ubuntu        | 🔴    | Víctima Linux                          |
-| 102  | SIFT                | Ubuntu        | 🔴    | Análisis forense (bajo demanda)        |
+### Virtualization
 
-**VMs inamovibles (críticas)**: 100 y 103
+- Proxmox VE as the hypervisor
+- Debian and Ubuntu virtual machines
+- Isolated test systems for controlled lab exercises
+- Snapshots before significant configuration changes
 
----
+### Services and Remote Administration
 
-### 🐳 Servicios Principales (VM 100)
+- Docker Engine for containerized services
+- Nginx as a reverse proxy
+- WireGuard for secure remote access
+- SSH administration with key-based authentication
+- Portainer for container visibility and management
 
-- WireGuard → VPN remota segura
-- Portainer → Gestión de Docker
-- Bot Telegram → Alertas en tiempo real
-- Nginx → Reverse proxy y dashboards
+### Monitoring and Security
 
----
+- Elasticsearch and Kibana for centralized visibility
+- Fleet Server and Elastic Agents for log collection
+- Suricata for network monitoring on the Linux test system
+- Log review and filtering with command-line tools
+- Controlled Nmap scans to validate network detections
 
-### 📊 SIEM – Elastic Stack
+## Current Progress
 
-- Elasticsearch + Kibana (HTTPS)
-- Fleet Server
-- Elastic Agents en Proxmox y VMs críticas
+- [x] Deploy Proxmox and Linux virtual machines
+- [x] Run containerized infrastructure services
+- [x] Configure remote administration
+- [x] Deploy Elastic Stack and Fleet Server
+- [x] Connect and validate Elastic Agents
+- [x] Generate and review Suricata events
+- [x] Validate visibility with a controlled network scan
+- [ ] Document backup and restore procedures
+- [ ] Add Windows Server and Active Directory scenarios
+- [ ] Add sanitized configuration examples
+- [ ] Create incident notes and troubleshooting runbooks
+- [ ] Improve dashboards and alerting
 
-**Flujo actual**:  
-Proxmox + VMs → Elastic Agent → Fleet → Elasticsearch → Kibana
+## Skills Demonstrated
 
----
+`Linux Administration` · `Proxmox` · `Docker` · `Networking` · `SSH` · `Nginx` · `WireGuard` · `Elastic Stack` · `Suricata` · `Troubleshooting` · `Security Hardening`
 
-### 🔐 Hardening Aplicado
+## Repository Status
 
-- Cortafuegos por capas
-- Acceso SSH solo por llave
-- Puertos mínimos expuestos
-- Segmentación estricta (vmbr2 aislada)
-- Snapshots regulares de VMs críticas
+This repository currently focuses on documentation. Sanitized configurations, diagrams and operational notes will be added as the lab develops.
 
----
+## Author
 
-### 🧪 Escenarios de Práctica Activos
+**Alexei Cuevas Ortega**
 
-- Detección de escaneos y fuerza bruta
-- Ejecución controlada de malware (LockBit 5.0, Lumma Stealer, AsyncRAT, Mirai)
-- Análisis forense con SANS SIFT
-- Creación y tuning de reglas de detección en Elastic
+Systems Engineering student focused on **Systems Administration, IT Infrastructure and Blue Team fundamentals**.
 
----
-
-### 📦 Estructura del Repositorio
-
-```bash
-homelab-blue-team/
-├── README.md
-├── configs/          # Configuraciones sanitizadas
-├── scripts/          # Automatización y alertas
-├── docs/             # Reportes SOC y playbooks
-├── diagrams/         # Diagramas y topología
-└── snapshots/        # Backups de configuración
+- [GitHub profile](https://github.com/Alexey-Ortega)
+- [LinkedIn](https://www.linkedin.com/in/alexei-cuevas-9a39552a7/)
